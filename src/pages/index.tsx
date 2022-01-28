@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import { IData } from "../interfaces";
 import { fetchData } from "../utils";
-import AppContext, { AppProvider } from "../context/AppContext";
+import { AppProvider } from "../context/AppContext";
 
 const Home: NextPage = () => {
     const initialData: IData = {
@@ -35,8 +35,8 @@ const Home: NextPage = () => {
                     />
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
-                <Header setIpData={setIpData}></Header>
-                <Main data={{ ...ipData }}></Main>
+                <Header></Header>
+                <Main></Main>
                 <Footer></Footer>
             </div>
         </AppProvider>

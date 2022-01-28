@@ -2,7 +2,7 @@ import { createContext, useState, FC } from "react";
 
 import { IAppContext, IError, IData } from "../interfaces";
 
-const defaultState = {
+const defaultState: IAppContext = {
     data: {
         ip: "127.0.0.1",
         location: "localhost",
@@ -14,6 +14,8 @@ const defaultState = {
     error: {
         state: false,
     },
+    handleError: (error: IError) => {},
+    handleSearch: (ip: string) => {},
 };
 
 const AppContext = createContext<IAppContext>(defaultState);
@@ -24,14 +26,32 @@ export const AppProvider: FC = ({ children }) => {
 
     const handleError = (error: IError) => {
         setError(error);
+        alert(error.message);
     };
 
-    const handleData = (data: IData) => {
-        setData(data);
+    const handleSearch = async (ip = "") => {
+        const response = await fetch("http://ipwhois.app/json/" + ip);
+        const data = await response.json();
+        if (data.success === false) {
+            handleError({
+                state: true,
+                message: data.message ? data.message : "error",
+            });
+            return;
+        }
+
+        setData({
+            ip: data.ip,
+            location: `${data.country}, ${data.city}`,
+            timezone: data.timezone_gmt,
+            isp: data.isp,
+            lat: data.latitude,
+            lon: data.longitude,
+        });
     };
 
     return (
-        <AppContext.Provider value={{ data, error, handleData, handleError }}>
+        <AppContext.Provider value={{ data, error, handleSearch, handleError }}>
             {children}
         </AppContext.Provider>
     );

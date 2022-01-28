@@ -1,9 +1,7 @@
 import React from "react";
 import { IData } from "../interfaces";
-
-type barProps = {
-    data: IData;
-};
+import { useContext } from "react";
+import AppContext from "../context/AppContext";
 
 type CardProps = {
     title: string;
@@ -31,7 +29,9 @@ const Card = ({ title, data, first = false }: CardProps) => {
     );
 };
 
-const InformationBar = ({ data }: barProps) => {
+const InformationBar = () => {
+    const { data } = useContext(AppContext);
+
     return (
         <section className="grid w-5/6 grid-rows-4 -mt-16 overflow-hidden bg-white md:h-40 md:grid-rows-1 lg:w-2/3 rounded-2xl md:grid-cols-4 absolute z-100">
             <Card title="IP ADDRESS" data={data.ip} first />

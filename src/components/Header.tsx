@@ -1,18 +1,10 @@
-import React, {
-    useState,
-    MouseEvent,
-    ChangeEvent,
-    SetStateAction,
-    Dispatch,
-} from "react";
-import { fetchData } from "../utils/index";
-import { IData } from "../interfaces/index";
+import React, { useState, MouseEvent, ChangeEvent, useContext } from "react";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import AppContext from "../context/AppContext";
 
-type HeaderProps = {
-    setIpData: Dispatch<SetStateAction<IData>>;
-};
-const Header = ({ setIpData }: HeaderProps) => {
+const Header = () => {
+    const { handleSearch, handleError } = useContext(AppContext);
+
     const [input, setInput] = useState("");
     const { width } = useWindowDimensions();
 
@@ -20,13 +12,14 @@ const Header = ({ setIpData }: HeaderProps) => {
         setInput(e.target.value);
     };
 
-    const handleSearch = (e: MouseEvent) => {
+    const handleSubmit = (e: MouseEvent) => {
         e.preventDefault();
-        if (input.replace(/\s+/g, " ").trim() === "") {
-            alert("sfsafasd");
+        let ip = input.trim();
+        if (ip.replace(/\s+/g, " ").trim() === "") {
+            handleError({ state: true, message: "Empty IP address or Domain" });
             return;
         }
-        fetchData(setIpData, input);
+        handleSearch(ip);
     };
 
     return (
@@ -49,7 +42,7 @@ const Header = ({ setIpData }: HeaderProps) => {
                 />
                 <button
                     className="px-6 py-2 text-white bg-black active:bg-gray-800 "
-                    onClick={handleSearch}
+                    onClick={handleSubmit}
                 >
                     <span>
                         <img src="/images/icon-arrow.svg" alt=">" />

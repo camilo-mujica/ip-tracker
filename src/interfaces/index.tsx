@@ -15,6 +15,6 @@ export interface IError {
 export interface IAppContext {
     data: IData;
     error: IError;
-    handleData?: (data: IData) => void;
-    handleError?: (error: IError) => void;
+    handleSearch: (ip: string) => void;
+    handleError: (error: IError) => void;
 }
