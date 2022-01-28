@@ -9,9 +9,16 @@
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.4.0",
+    "@types/leaflet": "^1.7.9",
+    "leaflet": "^1.7.1",
+    "leaflet-defaulticon-compatibility": "^0.1.1",
+    "leaflet-geosearch": "^3.6.0",
     "next": "12.0.8",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-leaflet": "^3.2.5",
+    "sweetalert2": "^11.3.10",
+    "sweetalert2-react-content": "^4.2.0"
   },
   "devDependencies": {
     "@types/node": "17.0.12",

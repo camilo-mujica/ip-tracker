@@ -1,59 +1,43 @@
 import React from "react";
-import { Idata } from "../interfaces";
+import { IData } from "../interfaces";
 
-type barType = {
-    data: Idata;
+type barProps = {
+    data: IData;
 };
 
-const InformationBar = ({ data }: barType) => {
+type CardProps = {
+    title: string;
+    data: string;
+    first?: boolean;
+};
+
+const Card = ({ title, data, first = false }: CardProps) => {
     return (
-        <section className="w-2/3 bg-white -mt-16 rounded-2xl h-40 overflow-hidden grid grid-cols-4">
-            <div className="bg-gray-100 pl-6 py-8 flex">
-                <div className="grow">
-                    <h2 className="text-gray-400 font-medium text-sm tracking-widest">
-                        IP ADDRESS
-                    </h2>
-                    <p className="text-3xl pt-2 text-gray-800 font-medium">
-                        {data.ip}
-                    </p>
-                </div>
+        <div
+            className={`flex py-4 md:py-8 ${
+                !first &&
+                "md:before:content-[''] md:before:w-0.5 md:before:bg-gray-300"
+            } max-h-24 md:max-h-fit`}
+        >
+            <div className="flex flex-col justify-start px-6 text-center md:text-left grow">
+                <h2 className="text-sm font-medium tracking-widest text-gray-400">
+                    {title}
+                </h2>
+                <p className="text-base font-medium text-gray-800 md:pt-2 2xl:text-2xl">
+                    {data}
+                </p>
             </div>
-            <div className="bg-gray-100 py-8 flex">
-                <div className="bg-gray-300 w-0.5"></div>
+        </div>
+    );
+};
 
-                <div className="grow px-6">
-                    <h2 className="text-gray-400 font-medium text-sm tracking-widest">
-                        LOCATION
-                    </h2>
-                    <p className="text-3xl pt-2 text-gray-800 font-medium w-40 truncate  ">
-                        {data.location}{" "}
-                    </p>
-                </div>
-            </div>
-            <div className="bg-gray-100 py-8 flex">
-                <div className="bg-gray-300 w-0.5"></div>
-
-                <div className="grow px-6">
-                    <h2 className="text-gray-400 font-medium text-sm tracking-widest">
-                        TIMEZONE
-                    </h2>
-                    <p className="text-3xl pt-2 text-gray-800 font-medium">
-                        {data.timezone}
-                    </p>
-                </div>
-            </div>
-            <div className="bg-gray-100 py-8 flex">
-                <div className="bg-gray-300 w-0.5"></div>
-
-                <div className="grow px-6">
-                    <h2 className="text-gray-400 font-medium text-sm tracking-widest">
-                        ISP
-                    </h2>
-                    <p className="text-3xl pt-2 text-gray-800 font-medium w-40 truncate  ">
-                        {data.isp}
-                    </p>
-                </div>
-            </div>
+const InformationBar = ({ data }: barProps) => {
+    return (
+        <section className="grid w-5/6 grid-rows-4 -mt-16 overflow-hidden bg-white md:h-40 md:grid-rows-1 lg:w-2/3 rounded-2xl md:grid-cols-4 absolute z-100">
+            <Card title="IP ADDRESS" data={data.ip} first />
+            <Card title="LOCATION" data={data.location} />
+            <Card title="TIMEZONE" data={data.timezone} />
+            <Card title="ISP" data={data.isp} />
         </section>
     );
 };
