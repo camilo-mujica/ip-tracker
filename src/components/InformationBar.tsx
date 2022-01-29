@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useContext } from "react";
 import AppContext from "../context/AppContext";
 
@@ -30,10 +30,6 @@ const Card = ({ title, data, first = false }: CardProps) => {
 
 const InformationBar = () => {
     const { data } = useContext(AppContext);
-
-    useEffect(() => {
-        console.log("rendered!");
-    });
 
     return (
         <section className="grid w-5/6 grid-rows-4 -mt-16 overflow-hidden bg-white md:h-40 md:grid-rows-1 lg:w-2/3 rounded-2xl md:grid-cols-4 absolute z-100">

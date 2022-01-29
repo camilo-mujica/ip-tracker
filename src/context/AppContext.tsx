@@ -28,16 +28,16 @@ export const AppProvider: FC = ({ children }) => {
     const handleError = (error: IError) => {
         setError(error);
 
-        // const MySwal = withReactContent(Swal);
+        const MySwal = withReactContent(Swal);
 
-        // MySwal.fire({
-        //     icon: "error",
-        //     title: "Oops...",
-        //     text: error.message,
-        //     didClose: () => {
-        //         setError(defaultState.error);
-        //     },
-        // });
+        MySwal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.message,
+            didClose: () => {
+                setError(defaultState.error);
+            },
+        });
         console.log(error);
     };
 

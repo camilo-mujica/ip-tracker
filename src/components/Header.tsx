@@ -13,7 +13,7 @@ import AppContext from "../context/AppContext";
 import ReCAPTCHA from "react-google-recaptcha";
 
 const Header = () => {
-    const { handleSearch, handleError } = useContext(AppContext);
+    const { handleError, handleSearch } = useContext(AppContext);
     const [input, setInput] = useState("");
     const { width } = useWindowDimensions();
     const recaptchaRef: RefObject<any> = useRef(null);

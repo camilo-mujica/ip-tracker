@@ -12,11 +12,6 @@ export interface IError {
     message?: string;
 }
 
-export interface IErrorContext {
-    error: IError;
-    handleError: (error: IError) => void;
-}
-
 export interface IAppContext {
     data: IData;
     error: IError;
