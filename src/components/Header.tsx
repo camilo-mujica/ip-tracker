@@ -17,9 +17,7 @@ const Header = () => {
     const { width } = useWindowDimensions();
     const recaptchaRef: RefObject<any> = useRef(null);
 
-    const siteKey: string = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-        ? process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-        : "";
+    const siteKey: string = "6LemRkMeAAAAAHbXgyRHfh81_wRknJEw0wfdg-xT";
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
