@@ -12,7 +12,7 @@ type CardProps = {
 const Card = ({ title, data, first = false }: CardProps) => {
     return (
         <div
-            className={`flex py-4 md:py-8 ${
+            className={`flex py-2 md:py-8 ${
                 !first &&
                 "md:before:content-[''] md:before:w-0.5 md:before:bg-gray-300"
             } max-h-24 md:max-h-fit`}

@@ -7,6 +7,7 @@ import React, {
     RefObject,
     FormEvent,
 } from "react";
+import Link from "next/link";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import AppContext from "../context/AppContext";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -53,7 +54,10 @@ const Header = () => {
         } catch (error: any) {
             handleError({
                 state: true,
-                message: error.message && error.message,
+                message:
+                    error && error.message
+                        ? error.message
+                        : "There has been a problem",
             });
         } finally {
             recaptchaRef.current.reset();
@@ -61,9 +65,10 @@ const Header = () => {
     };
 
     return (
-        <header className="bg-cover bg-[url(/images/pattern-bg.png)] min-w-full flex items-center py-8 md:pt-16 md:pb-24 flex-col gap-y-8 h-64 md:h-fit md:min-h-fit">
-            <h1 className="text-2xl font-medium text-white md:text-4xl font-rubik">
-                IP Address Tracker
+        <header className="bg-cover bg-[url(/images/pattern-bg.png)] gap-y-3 min-w-full flex items-center py-4 md:py-8 md:pt-16 md:pb-24 flex-col md:gap-y-8 h-48 md:h-fit md:min-h-fit">
+            {/* <header className="bg-cover bg-[url(/images/pattern-bg.png)] min-w-full flex items-center h-48 py-4 md:py-8 md:pt-16 md:pb-24 flex-col gap-y-3 md:gap-y-8 md:h-64 md:h-fit md:min-h-fit"></header> */}
+            <h1 className="text-xl font-medium text-white md:text-4xl font-rubik">
+                <Link href="/">IP Address Tracker</Link>
             </h1>
 
             <form

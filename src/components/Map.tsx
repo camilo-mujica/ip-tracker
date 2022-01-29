@@ -37,7 +37,10 @@ const Map = () => {
 
     const displayMap = useMemo(() => {
         const position: LatLngExpression = [data.lat, data.lon];
-        const offsetPosition: LatLngExpression = [data.lat - 0.03, data.lon];
+        const offsetPosition: LatLngExpression = [
+            data.lat - 0.005,
+            data.lon - 0.004,
+        ];
 
         return width < 768 ? (
             <MapContainer
