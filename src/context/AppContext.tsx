@@ -1,6 +1,7 @@
-import { createContext, useState, FC } from "react";
-
-import { IAppContext, IError, IData } from "../interfaces";
+import { createContext, useState, FC, useEffect } from "react";
+import { IAppContext, IError } from "../interfaces";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 const defaultState: IAppContext = {
     data: {
@@ -25,8 +26,17 @@ export const AppProvider: FC = ({ children }) => {
     const [error, setError] = useState(defaultState.error);
 
     const handleError = (error: IError) => {
+        const MySwal = withReactContent(Swal);
+
         setError(error);
-        alert(error.message);
+        MySwal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.message,
+            didClose: () => {
+                setError(defaultState.error);
+            },
+        });
     };
 
     const handleSearch = async (ip = "") => {
@@ -49,6 +59,10 @@ export const AppProvider: FC = ({ children }) => {
             lon: data.longitude,
         });
     };
+
+    useEffect(() => {
+        // handleSearch();
+    });
 
     return (
         <AppContext.Provider value={{ data, error, handleSearch, handleError }}>
