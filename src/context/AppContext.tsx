@@ -26,17 +26,19 @@ export const AppProvider: FC = ({ children }) => {
     const [error, setError] = useState(defaultState.error);
 
     const handleError = (error: IError) => {
-        const MySwal = withReactContent(Swal);
-
         setError(error);
-        MySwal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error.message,
-            didClose: () => {
-                setError(defaultState.error);
-            },
-        });
+
+        // const MySwal = withReactContent(Swal);
+
+        // MySwal.fire({
+        //     icon: "error",
+        //     title: "Oops...",
+        //     text: error.message,
+        //     didClose: () => {
+        //         setError(defaultState.error);
+        //     },
+        // });
+        console.log(error);
     };
 
     const handleSearch = async (ip = "") => {
