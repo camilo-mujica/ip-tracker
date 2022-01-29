@@ -1,25 +1,65 @@
-import React, { useState, MouseEvent, ChangeEvent, useContext } from "react";
+import React, {
+    useState,
+    MouseEvent,
+    ChangeEvent,
+    useContext,
+    useRef,
+    RefObject,
+    FormEvent,
+} from "react";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import AppContext from "../context/AppContext";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Header = () => {
     const { handleSearch, handleError } = useContext(AppContext);
-
     const [input, setInput] = useState("");
     const { width } = useWindowDimensions();
+    const recaptchaRef: RefObject<any> = useRef(null);
+
+    const siteKey: string = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+        ? process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+        : "";
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value);
     };
 
-    const handleSubmit = (e: MouseEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         let ip = input.trim();
         if (ip.replace(/\s+/g, " ").trim() === "") {
             handleError({ state: true, message: "Empty IP address or Domain" });
             return;
         }
-        handleSearch(ip);
+
+        try {
+            const token = await recaptchaRef.current.executeAsync();
+
+            const tokenValidation = await fetch("/api/tokenValidation", {
+                method: "POST",
+                body: JSON.stringify({ token: token }),
+            });
+
+            const isHuman = await tokenValidation.json();
+
+            if (isHuman.success === false) {
+                throw Error(
+                    isHuman.message
+                        ? isHuman.message
+                        : "Human verification failed "
+                );
+            }
+
+            handleSearch(ip);
+        } catch (error: any) {
+            handleError({
+                state: true,
+                message: error.message && error.message,
+            });
+        } finally {
+            recaptchaRef.current.reset();
+        }
     };
 
     return (
@@ -28,7 +68,10 @@ const Header = () => {
                 IP Address Tracker
             </h1>
 
-            <form className="flex w-5/6 overflow-hidden bg-gray-100 rounded-2xl md:w-1/2 xl:w-1/3">
+            <form
+                className="flex w-5/6 overflow-hidden bg-gray-100 rounded-2xl md:w-1/2 xl:w-1/3"
+                onSubmit={handleSubmit}
+            >
                 <input
                     type="text"
                     className="w-40 py-3 text-lg bg-gray-100 sm:pl-8 form-input sm:w-80 hover:bg-white focus:bg-white active:bg-white grow"
@@ -41,13 +84,18 @@ const Header = () => {
                     onChange={handleChange}
                 />
                 <button
+                    type="submit"
                     className="px-6 py-2 text-white bg-black active:bg-gray-800 "
-                    onClick={handleSubmit}
                 >
                     <span>
                         <img src="/images/icon-arrow.svg" alt=">" />
                     </span>
                 </button>
+                <ReCAPTCHA
+                    ref={recaptchaRef}
+                    size="invisible"
+                    sitekey={siteKey}
+                ></ReCAPTCHA>
             </form>
         </header>
     );
