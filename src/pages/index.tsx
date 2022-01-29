@@ -13,7 +13,6 @@ const Home: NextPage = () => {
                     name="description"
                     content="Search for any IP addresses or domains and see the key information and location"
                 />
-                <link rel="icon" href="/favicon.ico" />
             </Head>
             <Header></Header>
             <Main></Main>
