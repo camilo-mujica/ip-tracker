@@ -101,7 +101,10 @@ const Header = () => {
                     className="px-6 py-2 text-white bg-black active:bg-gray-800 "
                 >
                     <span>
-                        <img src="/images/icon-arrow.svg" alt=">" />
+                        {
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src="/images/icon-arrow.svg" alt=">" />
+                        }
                     </span>
                 </button>
                 <ReCAPTCHA
