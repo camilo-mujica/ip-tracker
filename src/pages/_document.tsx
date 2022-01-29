@@ -20,6 +20,11 @@ class MyDocument extends Document {
                     <link rel="apple-touch-icon" href="/icon-192x192.png" />
                     <link rel="icon" href="/icon-192x192.png" />
                     <meta name="theme-color" content="#fff" />
+                    <meta
+                        property="og:image"
+                        content={"/iptracker.png"}
+                        key="ogimage"
+                    />
                 </Head>
                 <body>
                     <Main />
