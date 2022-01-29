@@ -78,7 +78,7 @@ const Header = () => {
     return (
         <header className="bg-cover bg-[url(/images/pattern-bg.png)] gap-y-3 min-w-full flex items-center py-4 md:py-8 md:pt-16 md:pb-24 flex-col md:gap-y-8 h-48 md:h-fit md:min-h-fit">
             <h1 className="text-xl font-medium text-white md:text-4xl font-rubik">
-                <Link href="/">IP Address Tracker</Link>
+                <Link href="/">IP Address Tracker - Test</Link>
             </h1>
 
             <form
