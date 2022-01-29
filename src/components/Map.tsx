@@ -51,7 +51,7 @@ const Map = () => {
             >
                 <ChangeView center={position} zoom={13}></ChangeView>
                 <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 <Marker position={offsetPosition} draggable={true} icon={ICON}>
@@ -78,7 +78,7 @@ const Map = () => {
             >
                 <ChangeView center={position} zoom={13}></ChangeView>
                 <TileLayer
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
                 <Marker position={position} draggable={true} icon={ICON}>

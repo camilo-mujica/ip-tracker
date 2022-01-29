@@ -30,7 +30,7 @@ export const AppProvider: FC = ({ children }) => {
     };
 
     const handleSearch = async (ip = "") => {
-        const response = await fetch("http://ipwhois.app/json/" + ip);
+        const response = await fetch("https://ipwhois.app/json/" + ip);
         const data = await response.json();
         if (data.success === false) {
             handleError({
