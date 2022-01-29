@@ -1,11 +1,11 @@
 import React, {
     useState,
-    MouseEvent,
     ChangeEvent,
     useContext,
     useRef,
     RefObject,
     FormEvent,
+    useEffect,
 } from "react";
 import Link from "next/link";
 import useWindowDimensions from "../hooks/useWindowDimensions";
@@ -24,14 +24,7 @@ const Header = () => {
         setInput(e.target.value);
     };
 
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        let ip = input.trim();
-        if (ip.replace(/\s+/g, " ").trim() === "") {
-            handleError({ state: true, message: "Empty IP address or Domain" });
-            return;
-        }
-
+    const fetchData = async (ip = "") => {
         try {
             const token = await recaptchaRef.current.executeAsync();
 
@@ -50,6 +43,8 @@ const Header = () => {
                 );
             }
 
+            console.log("is human!!");
+
             handleSearch(ip);
         } catch (error: any) {
             handleError({
@@ -64,9 +59,24 @@ const Header = () => {
         }
     };
 
+    const handleSubmit = async (e: FormEvent) => {
+        e.preventDefault();
+        let ip = input.trim();
+        if (ip.replace(/\s+/g, " ").trim() === "") {
+            handleError({ state: true, message: "Empty IP address or Domain" });
+            return;
+        }
+
+        fetchData(ip);
+    };
+
+    useEffect(() => {
+        // fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <header className="bg-cover bg-[url(/images/pattern-bg.png)] gap-y-3 min-w-full flex items-center py-4 md:py-8 md:pt-16 md:pb-24 flex-col md:gap-y-8 h-48 md:h-fit md:min-h-fit">
-            {/* <header className="bg-cover bg-[url(/images/pattern-bg.png)] min-w-full flex items-center h-48 py-4 md:py-8 md:pt-16 md:pb-24 flex-col gap-y-3 md:gap-y-8 md:h-64 md:h-fit md:min-h-fit"></header> */}
             <h1 className="text-xl font-medium text-white md:text-4xl font-rubik">
                 <Link href="/">IP Address Tracker</Link>
             </h1>
