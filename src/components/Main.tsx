@@ -1,11 +1,6 @@
 import React from "react";
 import InformationBar from "./InformationBar";
-import { IData } from "../interfaces/index";
 import dynamic from "next/dynamic";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-
-const MySwal = withReactContent(Swal);
 
 const Main = () => {
     const Map = dynamic(() => import("./Map"), { ssr: false });

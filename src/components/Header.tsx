@@ -11,9 +11,13 @@ import Link from "next/link";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 import AppContext from "../context/AppContext";
 import ReCAPTCHA from "react-google-recaptcha";
+import ErrorContext from "../context/ErrorContext";
+import LoadingContext from "../context/LoadingContext";
 
 const Header = () => {
-    const { handleError, handleSearch } = useContext(AppContext);
+    const { handleData } = useContext(AppContext);
+    const { handleError } = useContext(ErrorContext);
+    const { handleLoading } = useContext(LoadingContext);
     const [input, setInput] = useState("");
     const { width } = useWindowDimensions();
     const recaptchaRef: RefObject<any> = useRef(null);
@@ -25,6 +29,7 @@ const Header = () => {
     };
 
     const fetchData = async (ip = "") => {
+        handleLoading(true);
         try {
             const token = await recaptchaRef.current.executeAsync();
 
@@ -43,9 +48,24 @@ const Header = () => {
                 );
             }
 
-            console.log("is human!!");
+            const response = await (
+                await fetch("https://ipwhois.app/json/" + ip)
+            ).json();
 
-            handleSearch(ip);
+            if (response.success === false) {
+                throw new Error(response.message ? response.message : "Error");
+            }
+
+            const data = {
+                ip: response.ip,
+                location: `${response.country}, ${response.city}`,
+                timezone: response.timezone_gmt,
+                isp: response.isp,
+                lat: response.latitude,
+                lon: response.longitude,
+            };
+
+            handleData(data);
         } catch (error: any) {
             handleError({
                 state: true,
@@ -56,6 +76,7 @@ const Header = () => {
             });
         } finally {
             recaptchaRef.current.reset();
+            handleLoading(false);
         }
     };
 
