@@ -1,3 +1,5 @@
+import { SetStateAction } from "react";
+
 export interface IData {
     ip: string;
     location: string;
@@ -14,7 +16,15 @@ export interface IError {
 
 export interface IAppContext {
     data: IData;
+    handleData: (data: IData) => void;
+}
+
+export interface ILoadingContext {
+    loading: boolean;
+    handleLoading: (newState: boolean) => void;
+}
+
+export interface IErrorContext {
     error: IError;
-    handleSearch: (ip: string) => void;
     handleError: (error: IError) => void;
 }

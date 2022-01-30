@@ -32,7 +32,7 @@ const InformationBar = () => {
     const { data } = useContext(AppContext);
 
     return (
-        <section className="grid w-5/6 grid-rows-4 -mt-16 overflow-hidden bg-white md:h-40 md:grid-rows-1 lg:w-2/3 rounded-2xl md:grid-cols-4 absolute z-100">
+        <section className="grid w-5/6 grid-rows-4 -mt-16 overflow-hidden bg-white md:h-40 md:grid-rows-1 lg:w-2/3 rounded-2xl md:grid-cols-4 absolute z-50">
             <Card title="IP ADDRESS" data={data.ip} first />
             <Card title="LOCATION" data={data.location} />
             <Card title="TIMEZONE" data={data.timezone} />

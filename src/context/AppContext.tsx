@@ -1,7 +1,5 @@
-import { createContext, useState, FC, useEffect } from "react";
-import { IAppContext, IError } from "../interfaces";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import { createContext, useState, FC } from "react";
+import { IAppContext, IData } from "../interfaces";
 
 const defaultState: IAppContext = {
     data: {
@@ -12,62 +10,27 @@ const defaultState: IAppContext = {
         lat: 0,
         lon: 0,
     },
-    error: {
-        state: false,
-    },
-    handleError: (error: IError) => {},
-    handleSearch: (ip: string) => {},
+    handleData: (data: IData) => {},
 };
 
 const AppContext = createContext<IAppContext>(defaultState);
 
 export const AppProvider: FC = ({ children }) => {
     const [data, setData] = useState(defaultState.data);
-    const [error, setError] = useState(defaultState.error);
 
-    const handleError = (error: IError) => {
-        setError(error);
-
-        const MySwal = withReactContent(Swal);
-
-        MySwal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: error.message,
-            didClose: () => {
-                setError(defaultState.error);
-            },
-        });
-        console.log(error);
-    };
-
-    const handleSearch = async (ip = "") => {
-        const response = await fetch("https://ipwhois.app/json/" + ip);
-        const data = await response.json();
-        if (data.success === false) {
-            handleError({
-                state: true,
-                message: data.message ? data.message : "error",
-            });
-            return;
-        }
-
+    const handleData = (data: IData) => {
         setData({
             ip: data.ip,
-            location: `${data.country}, ${data.city}`,
-            timezone: data.timezone_gmt,
+            location: data.location,
+            timezone: data.timezone,
             isp: data.isp,
-            lat: data.latitude,
-            lon: data.longitude,
+            lat: data.lat,
+            lon: data.lon,
         });
     };
 
-    useEffect(() => {
-        // handleSearch();
-    });
-
     return (
-        <AppContext.Provider value={{ data, error, handleSearch, handleError }}>
+        <AppContext.Provider value={{ data, handleData }}>
             {children}
         </AppContext.Provider>
     );
