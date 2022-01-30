@@ -9,15 +9,13 @@ import React, {
 } from "react";
 import Link from "next/link";
 import useWindowDimensions from "../hooks/useWindowDimensions";
-import AppContext from "../context/AppContext";
 import ReCAPTCHA from "react-google-recaptcha";
 import ErrorContext from "../context/ErrorContext";
-import LoadingContext from "../context/LoadingContext";
+import { useIPData } from "../hooks/useIPData";
 
 const Header = () => {
-    const { handleData } = useContext(AppContext);
     const { handleError } = useContext(ErrorContext);
-    const { handleLoading } = useContext(LoadingContext);
+    const fetchIPData = useIPData();
     const [input, setInput] = useState("");
     const { width } = useWindowDimensions();
     const recaptchaRef: RefObject<any> = useRef(null);
@@ -28,58 +26,6 @@ const Header = () => {
         setInput(e.target.value);
     };
 
-    const fetchData = async (ip = "") => {
-        handleLoading(true);
-        try {
-            const token = await recaptchaRef.current.executeAsync();
-
-            const tokenValidation = await fetch("/api/tokenValidation", {
-                method: "POST",
-                body: JSON.stringify({ token: token }),
-            });
-
-            const isHuman = await tokenValidation.json();
-
-            if (isHuman.success === false) {
-                throw Error(
-                    isHuman.message
-                        ? isHuman.message
-                        : "Human verification failed "
-                );
-            }
-
-            const response = await (
-                await fetch("https://ipwhois.app/json/" + ip)
-            ).json();
-
-            if (response.success === false) {
-                throw new Error(response.message ? response.message : "Error");
-            }
-
-            const data = {
-                ip: response.ip,
-                location: `${response.country}, ${response.city}`,
-                timezone: response.timezone_gmt,
-                isp: response.isp,
-                lat: response.latitude,
-                lon: response.longitude,
-            };
-
-            handleData(data);
-        } catch (error: any) {
-            handleError({
-                state: true,
-                message:
-                    error && error.message
-                        ? error.message
-                        : "There has been a problem",
-            });
-        } finally {
-            recaptchaRef.current.reset();
-            handleLoading(false);
-        }
-    };
-
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         let ip = input.trim();
@@ -88,11 +34,11 @@ const Header = () => {
             return;
         }
 
-        fetchData(ip);
+        fetchIPData(ip);
     };
 
     useEffect(() => {
-        // fetchData();
+        // fetchIPData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
