@@ -1,4 +1,4 @@
-import React, { createContext, FC, useState, useEffect } from "react";
+import React, { createContext, FC, useState } from "react";
 import { ILoadingContext } from "../interfaces";
 import Loader from "../components/Loader";
 
@@ -15,15 +15,6 @@ export const LoadingProvider: FC = ({ children }) => {
     const handleLoading = (newState: boolean) => {
         setLoading(newState);
     };
-    useEffect(() => {
-        if (loading === true) {
-            console.log("Loading..");
-        }
-        if (loading === false) {
-            console.log("Not loading..");
-        }
-    }, [loading]);
-
     const value: ILoadingContext = { loading, handleLoading };
     return (
         <LoadingContext.Provider value={value}>
